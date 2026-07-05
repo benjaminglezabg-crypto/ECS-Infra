@@ -1,0 +1,48 @@
+version: 0.2
+
+env:
+  variables:
+    TF_VERSION: "1.12.2"
+    TF_IN_AUTOMATION: "true"
+
+phases:
+  install:
+    commands:
+      - echo "Installing Terraform ${TF_VERSION}"
+      - curl -fsSLo terraform.zip "https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip"
+      - unzip -o terraform.zip
+      - install terraform /usr/local/bin/terraform
+      - terraform version
+
+  pre_build:
+    commands:
+      - echo "Initializing Terraform"
+      - terraform init -input=false
+
+      - echo "Checking Terraform formatting"
+      - terraform fmt -check -recursive
+
+      - echo "Validating Terraform configuration"
+      - terraform validate
+
+  build:
+    commands:
+      - echo "Creating Terraform plan"
+      - terraform plan
+        -input=false
+        -lock-timeout=5m
+        -out=tfplan
+
+  post_build:
+    commands:
+      - terraform show -no-color tfplan > tfplan.txt
+      - echo "Terraform plan completed"
+      - cat tfplan.txt
+
+artifacts:
+  files:
+    - "**/*"
+  exclude-paths:
+    - ".terraform/**/*"
+    - "*.tfstate"
+    - "*.tfstate.*"
