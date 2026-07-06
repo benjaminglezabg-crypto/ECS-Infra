@@ -4,6 +4,12 @@ environment  = "dev"
 
 vpc_cidr = "10.0.0.0/16"
 
+container_port   = 80
+container_cpu    = 256
+container_memory = 512
+desired_count    = 2
+container_image  = "public.ecr.aws/nginx/nginx:stable-alpine"
+
 availability_zones = [
   "us-east-1a",
   "us-east-1b"
