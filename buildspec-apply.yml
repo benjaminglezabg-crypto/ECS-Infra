@@ -18,17 +18,14 @@ phases:
     commands:
       - echo "Initializing Terraform"
       - terraform init -input=false
+      - echo "Reviewing resources currently managed by Terraform"
+      - terraform state list
 
   build:
     commands:
-      - echo "Applying previously generated Terraform plan"
-      - terraform apply
-        -input=false
-        -lock-timeout=5m
-        -auto-approve
-        tfplan
+      - echo "Destroying Terraform infrastructure"
+      - terraform destroy -input=false -lock-timeout=5m -auto-approve
 
   post_build:
     commands:
-      - terraform output
-      - echo "Terraform apply completed"
+      - echo "Terraform destroy completed"
