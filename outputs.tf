@@ -37,3 +37,42 @@ output "nat_public_ip" {
   description = "Public IP assigned to the NAT Gateway"
   value       = aws_eip.nat.public_ip
 }
+output "ecr_repository_name" {
+  description = "ECR repository name"
+  value       = aws_ecr_repository.app.name
+}
+
+output "ecr_repository_url" {
+  description = "ECR repository URL"
+  value       = aws_ecr_repository.app.repository_url
+}
+
+output "ecs_cluster_name" {
+  description = "ECS cluster name"
+  value       = aws_ecs_cluster.main.name
+}
+
+output "ecs_service_name" {
+  description = "ECS service name"
+  value       = aws_ecs_service.app.name
+}
+
+output "ecs_task_definition_family" {
+  description = "ECS task definition family"
+  value       = aws_ecs_task_definition.app.family
+}
+
+output "alb_dns_name" {
+  description = "Application Load Balancer DNS"
+  value       = aws_lb.app.dns_name
+}
+
+output "website_url" {
+  description = "Application URL"
+  value       = "http://${aws_lb.app.dns_name}"
+}
+
+output "target_group_arn" {
+  description = "Target group ARN"
+  value       = aws_lb_target_group.app.arn
+}
