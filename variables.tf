@@ -59,3 +59,33 @@ variable "private_subnet_cidrs" {
     error_message = "Exactly two private subnet CIDRs must be provided."
   }
 }
+variable "container_port" {
+  description = "Port exposed by the application"
+  type        = number
+  default     = 80
+}
+
+variable "container_cpu" {
+  description = "CPU units assigned to the Fargate task"
+  type        = number
+  default     = 256
+}
+
+variable "container_memory" {
+  description = "Memory assigned to the Fargate task"
+  type        = number
+  default     = 512
+}
+
+variable "desired_count" {
+  description = "Number of ECS tasks"
+  type        = number
+  default     = 2
+}
+
+variable "container_image" {
+  description = "Initial image used to validate ECS"
+  type        = string
+  default     = "public.ecr.aws/nginx/nginx:stable-alpine"
+}
+
