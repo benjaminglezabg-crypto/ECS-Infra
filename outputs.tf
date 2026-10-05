@@ -47,21 +47,6 @@ output "ecr_repository_url" {
   value       = aws_ecr_repository.app.repository_url
 }
 
-output "ecs_cluster_name" {
-  description = "ECS cluster name"
-  value       = aws_ecs_cluster.main.name
-}
-
-output "ecs_service_name" {
-  description = "ECS service name"
-  value       = aws_ecs_service.app.name
-}
-
-output "ecs_task_definition_family" {
-  description = "ECS task definition family"
-  value       = aws_ecs_task_definition.app.family
-}
-
 output "alb_dns_name" {
   description = "Application Load Balancer DNS"
   value       = aws_lb.app.dns_name
