@@ -1,16 +1,21 @@
 resource "aws_ecs_cluster" "main" {
   name = "${var.project_name}-${var.environment}-cluster"
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-cluster"
+  }
 }
+
 resource "aws_ecs_task_definition" "app" {
-  family                   = "${var.project_name}-${var.environment}"
+  family                   = "${var.project_name}-${var.environment}-task"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
 
   cpu    = "256"
   memory = "512"
 
-  execution_role_arn = aws_iam_role.ecs_execution_role.arn
-  task_role_arn      = aws_iam_role.ecs_task_role.arn
+  execution_role_arn = aws_iam_role.ecs_execution.arn
+  task_role_arn      = aws_iam_role.ecs_task.arn
 
   container_definitions = jsonencode([
     {
@@ -27,6 +32,10 @@ resource "aws_ecs_task_definition" "app" {
       ]
     }
   ])
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-task"
+  }
 }
 
 resource "aws_ecs_service" "app" {
@@ -34,8 +43,9 @@ resource "aws_ecs_service" "app" {
 
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = var.desired_count
-  launch_type     = "FARGATE"
+
+  desired_count = var.desired_count
+  launch_type   = "FARGATE"
 
   platform_version = "LATEST"
 
